@@ -232,15 +232,16 @@ function drawBar() {
     }
 }
 
-
+const alarmRadius = (canvas.width/2) * 0.05
+const alarmMargin = 0.15
+const leftAlarmX = canvas.width * alarmMargin
+const leftAlarmY = canvas.width * 0.4
+const rightAlarmX = canvas.width * (1 - alarmMargin)
+const rightAlarmY = canvas.width * 0.4
 function drawAlarm() {
-    const alarmRadius = (canvas.width/2) * 0.05
-    const alarmMargin = 0.15
 
     // Left alarm
     ctx.beginPath()
-    const leftAlarmX = canvas.width * alarmMargin
-    const leftAlarmY = canvas.width * 0.4
     ctx.fillStyle = "#A9A9A9"
     ctx.arc(leftAlarmX, leftAlarmY + 5, alarmRadius + 5, 0, 2 * Math.PI)
     ctx.fill() 
@@ -254,8 +255,6 @@ function drawAlarm() {
 
     // Right alarm
     ctx.beginPath()
-    const rightAlarmX = canvas.width * (1 - alarmMargin)
-    const rightAlarmY = canvas.width * 0.4
     ctx.fillStyle = "#A9A9A9"
     ctx.arc(rightAlarmX, rightAlarmY + 5, alarmRadius + 5, 0, 2 * Math.PI)
     ctx.fill() 
@@ -362,6 +361,42 @@ canvas.onclick = (pointer) => {
     const pointerY = pointer.y
     var newFocus = null
 
+    const x = pointerX
+    const y = pointerY
+
+    const leftBorderLeft = leftAlarmX - alarmRadius
+    const leftBorderRight = leftAlarmX + alarmRadius
+    const leftBorderTop = leftAlarmY - alarmRadius
+    const leftBorderBottom = leftAlarmY + alarmRadius
+    const focusedBarX = barXTranslation[currentFocus][0]
+
+    if (x > leftBorderLeft &
+        x < leftBorderRight &
+        y < leftBorderBottom & 
+        y > leftBorderTop)  {
+            console.log("yes babi")
+            if (focusedBarX < (canvas.width/2)) {  // Lazy way out
+                rightAlarm = false
+                leftAlarm = true
+            } 
+        }
+
+    const rightBorderLeft = rightAlarmX - alarmRadius
+    const rightBorderRight = rightAlarmX + alarmRadius
+    const rightBorderTop = rightAlarmY - alarmRadius
+    const rightBorderBottom = rightAlarmY + alarmRadius
+
+    if (x > rightBorderLeft &
+        x < rightBorderRight &
+        y < rightBorderBottom & 
+        y > rightBorderTop)  {
+            console.log("yes babi")
+            if (focusedBarX > (canvas.width/2)) {
+                leftAlarm = false
+                rightAlarm = true
+            }
+        }
+
     if (checkBarMovement() || gameFinished) {
         return;
     }
@@ -389,4 +424,45 @@ canvas.onclick = (pointer) => {
             currentFocus = newFocus
         }
     }
+}
+
+canvas.onmousedown = (touch) => {
+    const x = touch.screenX
+    const y = touch.screenY
+
+    const leftBorderLeft = leftAlarmX - alarmRadius
+    const leftBorderRight = leftAlarmX + alarmRadius
+    const leftBorderTop = leftAlarmY - alarmRadius
+    const leftBorderBottom = leftAlarmY + alarmRadius
+    const focusedBarX = barXTranslation[currentFocus][0]
+
+    console.log(leftBorderLeft, leftBorderRight, leftBorderTop, leftBorderBottom)
+    console.log(x, y)
+
+    if (x > leftBorderLeft &
+        x < leftBorderRight &
+        y < leftBorderBottom & 
+        y > leftBorderTop)  {
+            console.log("yes babi")
+            if (focusedBarX < (canvas.width/2)) {  // Lazy way out
+                rightAlarm = false
+                leftAlarm = true
+            } 
+        }
+
+    const rightBorderLeft = rightAlarmX - alarmRadius
+    const rightBorderRight = rightAlarmX + alarmRadius
+    const rightBorderTop = rightAlarmY - alarmRadius
+    const rightBorderBottom = rightAlarmY + alarmRadius
+
+    if (x > rightBorderLeft &
+        x < rightBorderRight &
+        y < rightBorderBottom & 
+        y > rightBorderTop)  {
+            console.log("yes babi")
+            if (focusedBarX > (canvas.width/2)) {
+                leftAlarm = false
+                rightAlarm = true
+            }
+        }
 }
