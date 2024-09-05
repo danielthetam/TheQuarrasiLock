@@ -94,6 +94,7 @@ function checkBarMovement() {
 function drawBackground() {
 
     if (leftLoser) {
+        ctx.beginPath()
         const grad=ctx.createLinearGradient(0,0, canvas.width * .3,0);
         grad.addColorStop(0, "red");
         grad.addColorStop(1, "purple"); 
@@ -101,13 +102,15 @@ function drawBackground() {
         ctx.fillRect(0, 0, canvas.width, canvas.height); 
     }
     else if (rightLoser) {
-        const grad=ctx.createLinearGradient(0,0, canvas.width * .3,0);
-        grad.addColorStop(0, "red");
-        grad.addColorStop(1, "purple"); 
+        ctx.beginPath()
+        const grad=ctx.createLinearGradient(0,0, canvas.width * 1.5, 0);
+        grad.addColorStop(0, "purple");
+        grad.addColorStop(1, "red"); 
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, canvas.width, canvas.height); 
     }
     else if (gameFinished & !leftLoser & !rightLoser) {
+        ctx.beginPath()
         const grad=ctx.createLinearGradient(0,0, canvas.width * .3,0);
         grad.addColorStop(0, "green");
         grad.addColorStop(1, "purple"); 
