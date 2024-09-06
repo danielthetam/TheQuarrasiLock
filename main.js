@@ -275,6 +275,16 @@ function update() {
     drawBar()
     drawAlarm()
 
+    if (rightAlarm || leftAlarm) {
+        const focusedBarX = barXTranslation[currentFocus][0]
+        if (focusedBarX < (canvas.width/2)) {  // Lazy way out
+            rightAlarm = false
+        } 
+        else if (focusedBarX > (canvas.width/2)) {
+            leftAlarm = false
+        }
+    }
+
     for (i=0; i<barXTranslation.length; ++i) {
         if (barXTranslation[i][1] < 0)  {  // Moving left
             const maxLeft = trackXPos - (trackWidth/2) + (barWidth/2)
@@ -374,7 +384,6 @@ canvas.onclick = (pointer) => {
         x < leftBorderRight &
         y < leftBorderBottom & 
         y > leftBorderTop)  {
-            console.log("yes babi")
             if (focusedBarX < (canvas.width/2)) {  // Lazy way out
                 rightAlarm = false
                 leftAlarm = true
@@ -390,7 +399,6 @@ canvas.onclick = (pointer) => {
         x < rightBorderRight &
         y < rightBorderBottom & 
         y > rightBorderTop)  {
-            console.log("yes babi")
             if (focusedBarX > (canvas.width/2)) {
                 leftAlarm = false
                 rightAlarm = true
